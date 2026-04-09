@@ -21,42 +21,40 @@ third-party dependency in the future, either:
 
 import json
 import os
-import sys
+import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 from focus import focus_terminal
 
 
-def play_notification():
-    """Play a notification sound using macOS native afplay."""
-    try:
-        # Look for the on_input_twitter.wav file in the .claude/hooks/assets directory
-        wav_file = Path.home() / ".claude" / "hooks" / "assets" / "on_input_twitter.wav"
-
-        if wav_file.exists():
-            # Use macOS native afplay command (non-blocking)
-            subprocess.Popen(["afplay", "-v", "3", str(wav_file)],
-                           stdout=subprocess.DEVNULL,
-                           stderr=subprocess.DEVNULL)
-        else:
-            print(f"No on_input_twitter.wav found at {wav_file}", file=sys.stderr)
-    except Exception as e:
-        print(f"Error playing audio: {e}", file=sys.stderr)
+def _play_wav(wav_path: Path):
+    """Play a WAV file using the platform's available audio player."""
+    if not wav_path.exists():
+        print(f"Audio file not found: {wav_path}", file=sys.stderr)
+        return
+    for player in ("afplay", "paplay", "aplay"):
+        if shutil.which(player):
+            args = [player]
+            if player == "afplay":
+                args += ["-v", "3"]
+            args.append(str(wav_path))
+            subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
 
 
 def main():
     """Main hook handler."""
     try:
-        # Read the hook input from stdin
-        hook_input = json.load(sys.stdin)
+        # Drain stdin (required by hook protocol)
+        json.load(sys.stdin)
 
-        # Bring the exact iTerm2 tab to focus unless opted out
         if not os.environ.get("CLAUDE_NO_FOCUS"):
             focus_terminal()
 
-        # Play notification sound
-        play_notification()
+        wav_file = Path.home() / ".claude" / "hooks" / "assets" / "on_input_twitter.wav"
+        _play_wav(wav_file)
 
     except Exception as e:
         print(f"Hook error: {e}", file=sys.stderr)

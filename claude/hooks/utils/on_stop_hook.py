@@ -22,52 +22,46 @@ third-party dependency in the future, either:
 
 import json
 import os
-import sys
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from datetime import datetime
 
 from focus import focus_terminal
 
 
-def play_notification():
-    """Play a simple notification sound using macOS native afplay."""
-    try:
-        # Look for a on_stop_boop.wav file in the .claude/hooks/assets directory
-        wav_file = Path.home() / ".claude" / "hooks" / "assets" / "on_stop_boop.wav"
-
-        if wav_file.exists():
-            # Use macOS native afplay command (non-blocking)
-            subprocess.Popen(["afplay", "-v", "3", str(wav_file)],
-                           stdout=subprocess.DEVNULL,
-                           stderr=subprocess.DEVNULL)
-        else:
-            print(f"No on_stop_boop.wav found at {wav_file}", file=sys.stderr)
-    except Exception as e:
-        print(f"Error playing audio: {e}", file=sys.stderr)
+def _play_wav(wav_path: Path):
+    """Play a WAV file using the platform's available audio player."""
+    if not wav_path.exists():
+        print(f"Audio file not found: {wav_path}", file=sys.stderr)
+        return
+    for player in ("afplay", "paplay", "aplay"):
+        if shutil.which(player):
+            args = [player]
+            if player == "afplay":
+                args += ["-v", "3"]
+            args.append(str(wav_path))
+            subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
 
 
 def save_transcript(transcript_path: str):
     """Save the chat transcript to the logs folder."""
     try:
-        # Create logs directory if it doesn't exist
         logs_dir = Path.home() / ".claude" / "logs"
         logs_dir.mkdir(exist_ok=True)
 
-        # Expand the transcript path
         transcript_path = Path(transcript_path).expanduser()
 
         if not transcript_path.exists():
             print(f"Transcript not found: {transcript_path}", file=sys.stderr)
             return
 
-        # Create a timestamped filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         session_id = transcript_path.parent.name
         log_filename = f"session_{timestamp}_{session_id}.jsonl"
 
-        # Copy the transcript
         destination = logs_dir / log_filename
         shutil.copy2(transcript_path, destination)
 
@@ -80,22 +74,17 @@ def save_transcript(transcript_path: str):
 def main():
     """Main hook handler."""
     try:
-        # Read the hook input from stdin
         hook_input = json.load(sys.stdin)
 
-        # Check if we're already in a stop hook loop
         if hook_input.get("stop_hook_active"):
-            # Don't trigger another iteration to avoid infinite loops
             return
 
-        # Bring the exact iTerm2 tab to focus unless opted out
         if not os.environ.get("CLAUDE_NO_FOCUS"):
             focus_terminal()
 
-        # Play notification sound
-        play_notification()
+        wav_file = Path.home() / ".claude" / "hooks" / "assets" / "on_stop_boop.wav"
+        _play_wav(wav_file)
 
-        # Save the transcript
         transcript_path = hook_input.get("transcript_path")
         if transcript_path:
             save_transcript(transcript_path)
