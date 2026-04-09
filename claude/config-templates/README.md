@@ -45,7 +45,8 @@ For full-stack projects with both frontend and backend.
 
 **Enabled plugins:**
 - ✅ All development-related plugins (including Supabase)
-- ❌ Only ARM Cortex and Document Skills disabled
+- ✅ Document Skills (READMEs, docs alongside code)
+- ❌ Only ARM Cortex disabled
 
 ---
 

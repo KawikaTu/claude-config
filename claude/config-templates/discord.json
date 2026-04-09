@@ -8,6 +8,7 @@
     "feature-dev@claude-plugins-official": false,
     "serena@claude-plugins-official": true,
     "document-skills@anthropic-agent-skills": false,
+    "swift-lsp@claude-plugins-official": false,
     "supabase@claude-plugins-official": false,
     "discord@claude-plugins-official": true
   }
