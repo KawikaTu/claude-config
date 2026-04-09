@@ -35,4 +35,19 @@ __pycache__/
 .DS_Store
 
 # Local machine overrides (not tracked)
-zshrc.local
+*.local
+
+# Environment / secret files (defense in depth)
+.env
+.env.*
+*.env
+!*.env.example
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+id_ecdsa

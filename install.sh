@@ -10,7 +10,15 @@ echo "Installing from $REPO..."
 # ── Shell dotfiles ───────────────────────────────────────────────────────────
 ln -sf "$REPO/zshrc"    ~/.zshrc
 ln -sf "$REPO/zprofile" ~/.zprofile
-ln -sf "$REPO/gitconfig" ~/.gitconfig
+
+# gitconfig: warn before clobbering an existing non-symlink config
+if [[ -f ~/.gitconfig && ! -L ~/.gitconfig ]]; then
+  echo "  ⚠  ~/.gitconfig already exists (not a symlink). Skipping to avoid data loss."
+  echo "     Back it up or delete it, then re-run: rm ~/.gitconfig && ./install.sh"
+else
+  ln -sf "$REPO/gitconfig" ~/.gitconfig
+fi
+
 echo "  ✓ Shell dotfiles symlinked"
 
 # ── Claude dirs ──────────────────────────────────────────────────────────────
