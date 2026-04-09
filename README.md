@@ -30,7 +30,9 @@ Then manually add secrets not tracked in git (see [Secrets](#secrets)).
     ├── CLAUDE.md           # → ~/.claude/CLAUDE.md
     ├── settings.json       # → ~/.claude/settings.json
     ├── config-templates/   # → ~/.claude/config-templates/
-    ├── hooks/utils/        # → ~/.claude/hooks/utils/
+    ├── hooks/
+    │   ├── utils/          # → ~/.claude/hooks/utils/
+    │   └── assets/         # → ~/.claude/hooks/assets/ (notification sounds)
     ├── rules/              # → ~/.claude/rules/
     ├── agents/             # → ~/.claude/agents/
     └── skills/             # → ~/.claude/skills/
@@ -136,9 +138,10 @@ Utility imported by the other hooks. Detects the terminal emulator (iTerm2,
 Terminal.app, VS Code integrated terminal) and focuses the correct window/tab
 using AppleScript or shell escape sequences.
 
-> **Note:** The audio assets (`hooks/assets/*.wav`) are not tracked in git —
-> they're large binaries and optional. The hooks fail silently if the file is
-> missing. Copy your preferred sounds to `~/.claude/hooks/assets/` manually.
+> **Note:** The audio assets (`hooks/assets/*.wav`) are tracked in git and
+> symlinked automatically by `install.sh`. The hooks fail silently if a file is
+> missing, so you can remove a sound from the assets directory to disable it
+> without touching the hook scripts.
 
 ---
 

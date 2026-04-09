@@ -24,7 +24,7 @@ echo "  ✓ Shell dotfiles symlinked"
 # ── Claude dirs ──────────────────────────────────────────────────────────────
 mkdir -p ~/.claude
 
-for dir in config-templates hooks/utils rules agents skills; do
+for dir in config-templates hooks/utils hooks/assets rules agents skills; do
   mkdir -p ~/.claude/"$dir"
 done
 
@@ -32,6 +32,7 @@ ln -sf "$REPO/claude/CLAUDE.md"          ~/.claude/CLAUDE.md
 ln -sf "$REPO/claude/settings.json"      ~/.claude/settings.json
 ln -sf "$REPO/claude/config-templates"   ~/.claude/config-templates
 ln -sf "$REPO/claude/hooks/utils"        ~/.claude/hooks/utils
+ln -sf "$REPO/claude/hooks/assets"       ~/.claude/hooks/assets
 ln -sf "$REPO/claude/rules"              ~/.claude/rules
 ln -sf "$REPO/claude/agents"             ~/.claude/agents
 ln -sf "$REPO/claude/skills"             ~/.claude/skills
