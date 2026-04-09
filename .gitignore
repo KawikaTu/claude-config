@@ -1,0 +1,38 @@
+# Secrets — never commit
+claude/channels/
+
+# Large ephemeral / machine-specific dirs
+claude/logs/
+claude/projects/
+claude/plugins/
+claude/history.jsonl
+claude/shell-snapshots/
+claude/file-history/
+claude/todos/
+claude/tasks/
+claude/sessions/
+claude/plans/
+claude/cache/
+claude/paste-cache/
+claude/debug/
+claude/backups/
+claude/telemetry/
+claude/statsig/
+claude/usage-data/
+claude/session-env/
+claude/.claude/
+
+# Auto-generated files
+claude/mcp-needs-auth-cache.json
+claude/stats-cache.json
+claude/firebase-debug.log
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Local machine overrides (not tracked)
+zshrc.local

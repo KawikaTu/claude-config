@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "context7@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "arm-cortex-microcontrollers@claude-code-workflows": false,
+    "security-compliance@claude-code-workflows": false,
+    "feature-dev@claude-plugins-official": false,
+    "serena@claude-plugins-official": true,
+    "document-skills@anthropic-agent-skills": false,
+    "supabase@claude-plugins-official": false
+  }
+}

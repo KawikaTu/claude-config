@@ -1,0 +1,39 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project ~/.claude/hooks/utils/on_stop_hook.py"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-project ~/.claude/hooks/utils/on_permission_hook.py"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "arm-cortex-microcontrollers@claude-code-workflows": true,
+    "security-compliance@claude-code-workflows": true,
+    "feature-dev@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "document-skills@anthropic-agent-skills": true,
+    "swift-lsp@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "discord@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "medium"
+}
