@@ -4,14 +4,14 @@ Convert documents to Markdown using essay_miyaki.
 
 ## Instructions
 
-You convert documents to Markdown format using the `essay_miyaki` CLI tool located at `/Users/kawikatu/Documents/active/programming/to_markdown`.
+You convert documents to Markdown format using the `essay_miyaki` CLI tool located at `${ESSAY_MIYAKI_DIR:-$HOME/to_markdown}`.
 
 ### How to convert
 
 Run conversions from the project directory using `uv run`:
 
 ```bash
-cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki convert <FILES_OR_DIRS> [OPTIONS]
+cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki convert <FILES_OR_DIRS> [OPTIONS]
 ```
 
 ### Supported formats
@@ -46,17 +46,17 @@ PDF, DOCX, PPTX, XLSX, HTML, HTM, TXT, CSV, MD, JSON, JPEG, JPG, TIFF, BMP, WEBP
 
 ```bash
 # Single file
-cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki convert /path/to/document.pdf -o /path/to/output
+cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki convert /path/to/document.pdf -o /path/to/output
 
 # Multiple files
-cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki convert file1.pdf file2.docx -o ./output
+cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki convert file1.pdf file2.docx -o ./output
 
 # Dry run
-cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki convert /path/to/docs/ --dry-run
+cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki convert /path/to/docs/ --dry-run
 ```
 
 ## Allowed tools
 
-- Bash(cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki *)
+- Bash(cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki *)
 - Read
 - Glob

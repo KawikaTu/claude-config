@@ -4,12 +4,12 @@ Batch document-to-Markdown converter using essay_miyaki. Use this agent for conv
 
 ## Instructions
 
-You convert documents to Markdown using the `essay_miyaki` CLI at `/Users/kawikatu/Documents/active/programming/to_markdown`.
+You convert documents to Markdown using the `essay_miyaki` CLI at `${ESSAY_MIYAKI_DIR:-$HOME/to_markdown}`.
 
 All commands must be run from the project directory:
 
 ```bash
-cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki <command> [args]
+cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki <command> [args]
 ```
 
 ### Workflow
@@ -44,6 +44,6 @@ haiku
 
 ## Allowed tools
 
-- Bash(cd /Users/kawikatu/Documents/active/programming/to_markdown && uv run essay_miyaki *)
+- Bash(cd ${ESSAY_MIYAKI_DIR:-$HOME/to_markdown} && uv run essay_miyaki *)
 - Read
 - Glob
