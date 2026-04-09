@@ -20,46 +20,48 @@ bindkey '^[[B' history-search-forward
 
 # ---- Paths ----
 
-# Homebrew
-export PATH="/opt/homebrew/bin:$PATH"
+# Homebrew (macOS ARM, macOS Intel, or Linux)
+if [[ -f /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 # Bun
-export PATH="$HOME/.bun/bin:$PATH"
+[[ -d "$HOME/.bun/bin" ]] && export PATH="$HOME/.bun/bin:$PATH"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
-# PostgreSQL
-export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+# PostgreSQL (Homebrew)
+[[ -d /opt/homebrew/opt/postgresql@17/bin ]] && export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
-# Java / Android
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
-export PATH="$JAVA_HOME/bin:$PATH"
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH="$ANDROID_HOME/platform-tools:$PATH"
+# Java / Android (only if installed)
+if [[ -d /opt/homebrew/opt/openjdk@17 ]]; then
+  export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+  export PATH="$JAVA_HOME/bin:$PATH"
+fi
+[[ -d "$HOME/Library/Android/sdk" ]] && {
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH="$ANDROID_HOME/platform-tools:$PATH"
+}
 
 # ---- Tool initialization ----
 
 # Conda
-__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/anaconda3/bin:$PATH"
-    fi
+if [[ -f /opt/anaconda3/bin/conda ]]; then
+  eval "$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)" || {
+    [[ -f /opt/anaconda3/etc/profile.d/conda.sh ]] && . /opt/anaconda3/etc/profile.d/conda.sh
+  }
 fi
-unset __conda_setup
 
 # rbenv
-eval "$(rbenv init - zsh)"
+command -v rbenv &>/dev/null && eval "$(rbenv init - zsh)"
 
 # mise
-eval "$(~/.local/bin/mise activate)"
+[[ -x "$HOME/.local/bin/mise" ]] && eval "$("$HOME/.local/bin/mise" activate)"
 
 # ---- Aliases ----
 alias cld='claude --settings ~/.claude/config-templates/minimal.json'
@@ -82,7 +84,7 @@ d8(  888   888   888   888   888  d8(  888   888  888   888 `88bod8P'
 EOF
 
 # ---- Starship prompt (keep at end) ----
-eval "$(starship init zsh)"
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ---- Machine-local overrides (not tracked in git) ----
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
