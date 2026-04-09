@@ -13,25 +13,18 @@ echo "Installing from $REPO..."
 
 # symlink SRC DST
 # Creates or updates a symlink at DST pointing to SRC.
-# - Already correct symlink → skips (no output)
-# - Wrong symlink           → updates silently
-# - Real file/dir           → warns and skips (never destroys data)
+# - Existing symlink (any target) → re-links in place via ln -sfn
+# - Real file/dir                 → warns and skips (never destroys data)
+# - Absent                        → creates symlink
 symlink() {
   local src="$1" dst="$2"
 
   if [[ -L "$dst" ]]; then
-    local current
-    current="$(readlink "$dst")"
-    if [[ "$current" == "$src" ]]; then
-      return  # already correct, nothing to do
-    fi
-    ln -sf "$src" "$dst"
-    echo "  ↻ updated: $dst"
+    ln -sfn "$src" "$dst"
   elif [[ -e "$dst" ]]; then
-    echo "  ⚠  skipped: $dst exists as a real file/directory."
-    echo "     Remove it manually to symlink: rm -rf \"$dst\""
+    echo "  ⚠  skipped: $dst (exists, not a symlink)"
   else
-    ln -s "$src" "$dst"
+    ln -sn "$src" "$dst"
     echo "  ✓ linked:  $dst"
   fi
 }
