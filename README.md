@@ -4,6 +4,9 @@ Personal Claude Code configuration, synced across machines via private git repo.
 Cloned to `~/.claude-config` and symlinked into `~/.claude` and `~` so changes
 on any machine take effect immediately after `git pull`.
 
+**Platform support:** macOS and Ubuntu. Other Linux distributions may work but
+are untested.
+
 ---
 
 ## Quick start on a new machine
@@ -59,7 +62,7 @@ Minimal zsh config with Starship prompt. Includes:
 |---|---|---|
 | `cld` | `claude --settings ~/.claude/config-templates/minimal.json` | Quick tasks, exploration |
 | `cld-d` | `claude --settings ~/.claude/config-templates/discord.json` | Discord sessions |
-| `cld-safe` | `cld --allowedTools 'Read,Glob,Grep'` | Read-only audit mode |
+| `cld-safe` | `claude --settings .../minimal.json --allowedTools 'Read,Glob,Grep'` | Read-only audit mode |
 
 ### `zprofile`
 Login shell init: Homebrew shellenv + OrbStack shell integration.
@@ -252,12 +255,24 @@ To track a new top-level dotfile:
 
 ---
 
+## Environment variables
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `ESSAY_MIYAKI_DIR` | Path to the `essay_miyaki` project for `/convert-doc` | `$HOME/to_markdown` |
+| `CLAUDE_NO_FOCUS` | Set to `1` to disable terminal auto-focus on hook events | *(unset)* |
+
+Set these in `~/.zshrc.local` on machines that need them.
+
+---
+
 ## Security notes
 
 - The `.gitignore` blocks `.env` files, private keys (`*.pem`, `*.key`, `*.p12`),
   and `*.local` overrides as defense-in-depth — even if accidentally created
   inside this repo, they won't be staged
-- `install.sh` will not clobber an existing `~/.gitconfig` that isn't already
-  a symlink — it warns and skips instead
+- `install.sh` will not clobber any existing real file or directory — it warns
+  and skips all non-symlink destinations, requiring manual removal before
+  it will proceed
 - Hook scripts use argument lists (not `shell=True`) so no shell injection
   is possible even if hook input contains unexpected characters
