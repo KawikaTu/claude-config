@@ -1,7 +1,7 @@
-# claude-config
+# claude-config-sync
 
 Personal Claude Code configuration, synced across machines via private git repo.
-Cloned to `~/.claude-config` and symlinked into `~/.claude` and `~` so changes
+Cloned to `~/.claude-config-sync` and symlinked into `~/.claude` and `~` so changes
 on any machine take effect immediately after `git pull`.
 
 **Platform support:** macOS and Ubuntu. Other Linux distributions may work but
@@ -12,8 +12,8 @@ are untested.
 ## Quick start on a new machine
 
 ```bash
-git clone https://github.com/KawikaTu/claude-config.git ~/.claude-config
-cd ~/.claude-config && ./install.sh
+git clone https://github.com/KawikaTu/claude-config-sync.git ~/.claude-config-sync
+cd ~/.claude-config-sync && ./install.sh
 source ~/.zshrc
 ```
 
@@ -24,7 +24,7 @@ Then manually add secrets not tracked in git (see [Secrets](#secrets)).
 ## What's in this repo
 
 ```
-~/.claude-config/
+~/.claude-config-sync/
 ├── install.sh              # Bootstrap script — symlinks everything into place
 ├── zshrc                   # → ~/.zshrc
 ├── zprofile                # → ~/.zprofile
@@ -228,7 +228,7 @@ export PATH="/opt/work-tools/bin:$PATH"
 
 **After changing any tracked file on this machine:**
 ```bash
-cd ~/.claude-config
+cd ~/.claude-config-sync
 git add -p        # review changes interactively
 git commit -m "..."
 git push
@@ -236,7 +236,7 @@ git push
 
 **On other machines:**
 ```bash
-cd ~/.claude-config && git pull
+cd ~/.claude-config-sync && git pull
 # Symlinks mean no re-install needed — changes are live immediately
 ```
 
@@ -249,7 +249,7 @@ are automatically live on all machines after `git pull` because those
 directories are symlinked rather than file-by-file.
 
 To track a new top-level dotfile:
-1. Copy it into `~/.claude-config/`
+1. Copy it into `~/.claude-config-sync/`
 2. Add a `ln -sf` line to `install.sh`
 3. Commit and push
 

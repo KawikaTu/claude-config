@@ -1,6 +1,6 @@
 #!/bin/bash
 # Bootstrap Claude Code config on a new machine
-# Usage: cd ~/.claude-config && ./install.sh
+# Usage: cd ~/.claude-config-sync && ./install.sh
 # Safe to run multiple times — skips already-correct symlinks,
 # warns instead of clobbering real files or directories.
 set -e
